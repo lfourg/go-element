@@ -41,8 +41,8 @@
       <a-input-number v-model="option[item]" size="small" />
     </template>
     <template v-else-if="optionDis[item].type == 'color'">
-      <!--  <go-colors v-model="option[item]" /> -->
-      <a-input type="text" size="small" v-model="option[item]" />
+      <go-colors v-model="option[item]" />
+      <!-- <a-input type="text" size="small" v-model="option[item]" />-->
     </template>
     <template v-else-if="optionDis[item].type == 'editor'">
       <go-editor v-model="option[item]" />
@@ -61,8 +61,8 @@
 </template>
 
 <script>
-/* import goColors from "./color"; 
-import goEditor from "./editor";*/
+import goColors from "./color";
+/*import goEditor from "./editor";*/
 export default {
   name: "GoFormItemElement",
   props: {
@@ -70,7 +70,7 @@ export default {
     optionDis: { type: Object },
     item: { type: String }
   },
-  components: {},
+  components: { goColors },
   mounted() {}
 };
 </script>
