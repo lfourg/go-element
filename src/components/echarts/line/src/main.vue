@@ -54,26 +54,25 @@ export default {
      * 组件刷新
      */
     refresh() {
-      this.chart &&
-        this.chart.setOption(this.option, {
-          notMerge: true,
-          lazyUpdate: true
-        });
+      this.chart?.setOption(this.option, {
+        notMerge: true,
+        lazyUpdate: true
+      });
     },
     resize() {
-      this.chart && this.chart.resize();
+      this.chart?.resize();
     },
     setTheme() {},
     /**
      * 组件销毁，包括退出动画线
      */
     destroy() {
-      this.chart && this.chart.dispose();
+      this.chart?.dispose();
       //退出动画
       //****
     },
     loadChart() {
-      this.chart && this.chart.dispose();
+      this.chart?.dispose();
       this.setSeries();
       this.chart = this.$echarts.init(this.$refs.charts);
       this.chart.setOption(this.option);
@@ -84,7 +83,7 @@ export default {
       this.initChart();
     },
     bindEvent() {
-      this.chart.on("click", params => {
+      this.chart?.on("click", params => {
         console.log("params:", params);
         let defineMap = this.actions.click;
         defineMap.forEach(item => {
