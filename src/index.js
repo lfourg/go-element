@@ -84,12 +84,12 @@ import Drawer from "../packages/drawer/index.js";
 import Popconfirm from "../packages/popconfirm/index.js";
 import locale from "element-ui/src/locale";
 import CollapseTransition from "element-ui/src/transitions/collapse-transition";
-import { EchartsLine, EchartsLineData } from "../goPackages/echarts/index.js";
+import { EchartsLine, EchartsLineData } from "./components/echarts/index.js";
 import {
   OptionPanel,
-  DataPanel,
-  EventPanel,
-} from "../goPackages/panel/index.js";
+  SourcePanel,
+  ActionsPanel,
+} from "./components/panel/index.js";
 
 const components = [
   Table,
@@ -98,11 +98,11 @@ const components = [
   FormItem,
   EchartsLine,
   OptionPanel,
-  DataPanel,
-  EventPanel,
+  SourcePanel,
+  ActionsPanel,
 ];
 
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
 
@@ -127,8 +127,8 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.$message = Message;
   Vue.prototype.$go = {
     [EchartsLine.name]: {
-      getOption: EchartsLineData.getOption,
-      getOptionDis: EchartsLineData.getOptionDis,
+      getData: EchartsLineData.getData,
+      getDataDes: EchartsLineData.getDataDes,
     },
   };
 };
@@ -149,6 +149,6 @@ export default {
   FormItem,
   EchartsLine,
   OptionPanel,
-  DataPanel,
-  EventPanel,
+  SourcePanel,
+  ActionsPanel,
 };

@@ -18,7 +18,7 @@ export default {
   name: "GoEditor",
   props: {
     value: {
-      type: Object
+      default: () => {}
     },
     height: {
       type: Number,

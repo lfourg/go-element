@@ -4,32 +4,32 @@ export default {
   name: "GoFormItem",
   componentName: "GoFormItem",
   props: {
-    option: { type: Object },
-    optionDis: { type: Object }
+    data: { type: Object },
+    dataDes: { type: Object }
   },
   components: { GoFormItemElement },
   render() {
     return (
       <div>
-        {Object.keys(this.optionDis).map(key => {
-          if (key != "groupName") {
-            if (!this.optionDis[key].type) {
-              if (!this.optionDis[key].groupName) {
+        {Object.keys(this.dataDes).map(key => {
+          if (key != "groupName" && this.dataDes[key].visible != false) {
+            if (!this.dataDes[key].type) {
+              if (!this.dataDes[key].groupName) {
                 return (
                   <go-form-item
-                    option={this.option[key]}
-                    optionDis={this.optionDis[key]}
+                    data={this.data[key]}
+                    dataDes={this.dataDes[key]}
                   />
                 );
               }
             } else {
               return (
-                <a-form-model-item label={this.optionDis[key].name}>
+                <a-form-model-item label={this.dataDes[key].name}>
                   <go-form-item-element
                     key={key}
                     item={key}
-                    option={this.option}
-                    optionDis={this.optionDis}
+                    data={this.data}
+                    dataDes={this.dataDes}
                   />
                 </a-form-model-item>
               );

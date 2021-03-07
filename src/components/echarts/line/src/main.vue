@@ -1,13 +1,29 @@
 <template>
-  <div :style="{ ...size }" ref="charts" class="charts"></div>
+  <div :style="{ ...size }" ref="charts"></div>
 </template>
 <script>
 export default {
   name: "GoEchartsLine",
-  props: ["option"],
+  props: {
+    option: {
+      type: Object
+    },
+    actions: { type: Object },
+    data: {
+      type: [Object, Array]
+    },
+    width: {
+      type: [String, Number],
+      default: 500
+    },
+    height: {
+      type: [String, Number],
+      default: 400
+    }
+  },
   data() {
     return {
-      myChart: null,
+      chart: null,
       mapFields: {
         x: "name",
         y: "data",
@@ -18,8 +34,8 @@ export default {
   computed: {
     size: function() {
       return {
-        width: "500px",
-        height: "400px"
+        width: `${this.width}px`,
+        height: `${this.height}px`
       };
     }
   },
@@ -35,38 +51,32 @@ export default {
       //初始动画
     },
     /**
-     * 数据源数据、事件交互，由Go平台调用
-     */
-    setData(data) {
-      this.setSeries(data);
-    },
-    /**
      * 组件刷新
      */
     refresh() {
-      this.myChart &&
-        this.myChart.setOption(this.option, {
+      this.chart &&
+        this.chart.setOption(this.option, {
           notMerge: true,
           lazyUpdate: true
         });
     },
     resize() {
-      this.myChart && this.myChart.resize();
+      this.chart && this.chart.resize();
     },
     setTheme() {},
     /**
      * 组件销毁，包括退出动画线
      */
     destroy() {
-      this.myChart.dispose();
+      this.chart && this.chart.dispose();
       //退出动画
       //****
     },
-
     loadChart() {
-      this.myChart && this.myChart.dispose();
-      this.myChart = this.$echarts.init(this.$refs.charts);
-      this.myChart.setOption(this.option);
+      this.chart && this.chart.dispose();
+      this.setSeries();
+      this.chart = this.$echarts.init(this.$refs.charts);
+      this.chart.setOption(this.option);
       this.bindEvent();
     },
     handleUpdate() {
@@ -74,36 +84,32 @@ export default {
       this.initChart();
     },
     bindEvent() {
-      this.myChart.on("click", params => {
-        let defineMap = this.actionsData.click.defineMap;
+      this.chart.on("click", params => {
+        console.log("params:", params);
+        let defineMap = this.actions.click;
         defineMap.forEach(item => {
           if (item.field && item.mapField) {
             item.value = params[this.mapFields[item.field] || item.field];
-            this.goUpShareVar && this.goUpShareVar(item);
           }
         });
+        this.$emit("click", params);
       });
     },
     setSeries() {
       let [_xAxis, _series] = [[], []];
-      let _data = this.sourceData.static.data.value;
-      let _barAttr = this.optionData.barAttr;
       let temp = {};
-      _data.forEach(data => {
-        if (temp[data.s]) {
-          temp[data.s].data.push(data.y);
-          if (_xAxis.indexOf(data.x) == -1) _xAxis.push(data.x);
+      this.data.forEach(item => {
+        if (temp[item.s]) {
+          temp[item.s].data.push(item.y);
+          if (_xAxis.indexOf(item.x) == -1) _xAxis.push(item.x);
         } else {
-          temp[data.s] = {
-            type: "bar",
-            name: data.s,
-            barWidth: _barAttr.barWidth.value,
-            barGap: _barAttr.barCategoryGap.value + "%",
-            itemStyle: { barBorderRadius: _barAttr.barBorderRadius.value },
-            data: [data.y],
+          temp[item.s] = {
+            type: "line",
+            name: item.s,
+            data: [item.y],
             animation: true
           };
-          if (_xAxis.indexOf(data.x) == -1) _xAxis.push(data.x);
+          if (_xAxis.indexOf(item.x) == -1) _xAxis.push(item.x);
         }
       });
       for (let key in temp) {
@@ -123,8 +129,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.charts {
-  position: absolute;
-}
-</style>

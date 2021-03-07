@@ -1,10 +1,10 @@
 <script>
-import goForm from "../../components/form";
+import goForm from "../../../form/src/form";
 
 export default {
   name: "GoOptionPanel",
   componentName: "GoOptionPanel",
-  props: ["option", "optionDis"],
+  props: ["option", "optionDes"],
   data() {
     return {
       groups: []
@@ -12,7 +12,7 @@ export default {
   },
   components: { goForm },
   created() {
-    this.getGroups(this.optionDis, this.groups);
+    this.getGroups(this.optionDes, this.groups);
   },
   methods: {
     getGroups(_optionData, _groups) {
@@ -51,11 +51,11 @@ export default {
           return (
             <a-collapse-panel header={group.name} key={group.key}>
               <go-form
-                optionDis={this.optionDis[group.key]}
-                option={this.option[group.key]}
+                dataDes={this.optionDes[group.key]}
+                data={this.option[group.key]}
               />
               <go-option-panel
-                optionDis={this.optionDis[group.key]}
+                optionDes={this.optionDes[group.key]}
                 option={this.option[group.key]}
               />
             </a-collapse-panel>
